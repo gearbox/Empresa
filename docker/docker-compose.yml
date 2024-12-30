@@ -2,8 +2,8 @@ services:
   app-backend:
     environment:
       - UVICORN_WORKERS=${UVICORN_WORKERS}
-      - CONTAINER_HOST=${CONTAINER_HOST}
-      - CONTAINER_PORT=${CONTAINER_PORT}
+      - BACKEND_HOST=${BACKEND_HOST}
+      - BACKEND_PORT=${BACKEND_PORT}
       - BIND_HOST_PORT=${BIND_HOST_PORT}
       - BIND_HOST=${BIND_HOST}
       - APP_NAME=${APP_NAME}
@@ -24,14 +24,14 @@ services:
     networks:
       - app-network
     ports:
-     - "$BIND_HOST:$BIND_HOST_PORT:$CONTAINER_PORT"
+     - "$BIND_HOST:$BIND_HOST_PORT:$BACKEND_PORT"
     depends_on:
       app-postgres:
         condition: service_healthy
       app-redis:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "/bin/bash -c 'exec 3<>/dev/tcp/$CONTAINER_HOST/$CONTAINER_PORT;echo -e \"GET /healthcheck HTTP/1.1\r\nhost: http://$CONTAINER_HOST\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3'" ]
+      test: [ "CMD-SHELL", "/bin/bash -c 'exec 3<>/dev/tcp/$BACKEND_HOST/$BACKEND_PORT;echo -e \"GET /healthcheck HTTP/1.1\r\nhost: http://$BACKEND_HOST\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3'" ]
       interval: 15s
       timeout: 5s
       retries: 5
