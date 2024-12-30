@@ -4,11 +4,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    # Swagger
     openapi_url: str = "/openapi.json"
     swagger_ui_oauth2_redirect_url: str = "/docs/oauth2-redirect"
+
+    # ASGI
     uvicorn_workers: int = 1
     bind_host: str = "0.0.0.0"
     bind_host_port: int = 80
+
+    # Application
     app_name: str = "API"
     token_header_name: str = "header-name"
     token: str = "token"
