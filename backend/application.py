@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, UTC
 
 from fastapi import FastAPI
 from fastapi.openapi.docs import (
@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):
     This function is called when the application starts and stops.
     """
     # startup logic
-    app.start_time = datetime.utcnow()
+    app.start_time = datetime.now(UTC)
     init_logging()
     postgres.init_postgres()
     yield
