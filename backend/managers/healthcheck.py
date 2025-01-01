@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 
 from fastapi import Depends, Request
 from loguru import logger
@@ -27,7 +27,7 @@ class HealthCheckManager:
             return APIHealthCheck(
                 status=True,
                 start_time=self.app.start_time,
-                uptime_sec=int((datetime.utcnow() - self.app.start_time).total_seconds())
+                uptime_sec=int((datetime.now(UTC) - self.app.start_time).total_seconds())
             )
         except Exception as e:
             error_message = f"API healthcheck failed with error: {e}"
