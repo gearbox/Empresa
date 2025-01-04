@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session as DBSession
 
 from backend.databases import postgres, redis
 from backend.schemas import DBHealthCheck, APIHealthCheck
+from backend.settings import settings
 
 
 class HealthCheckManager:
@@ -35,6 +36,8 @@ class HealthCheckManager:
             return APIHealthCheck(status=False, message=error_message)
 
     def get_db_status(self) -> DBHealthCheck:
+        if not settings.postgres_host:
+            return DBHealthCheck(status="Disabled", message="DB host is not set")
         try:
             self.db.execute(select(1))
             return DBHealthCheck(status=True, message="DB healthcheck Ok")
@@ -44,6 +47,8 @@ class HealthCheckManager:
             return DBHealthCheck(status=False, message=error_message)
 
     def get_redis_status(self) -> DBHealthCheck:
+        if not settings.redis_host:
+            return DBHealthCheck(status="Disabled", message="Redis host is not set")
         try:
             self.redis_client.ping()
             return DBHealthCheck(status=True, message="Redis healthcheck Ok")

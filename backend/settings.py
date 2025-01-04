@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -19,14 +20,14 @@ class Settings(BaseSettings):
     token: str = "token"
 
     # Postgres
-    postgres_host: str = "postgres-host"
+    postgres_host: Optional[str] = None
     postgres_port: int = 5432
     postgres_db: str = "dbname"
     postgres_user: str = "user"
     postgres_password: str = "password"
 
     # Redis
-    redis_host: str = "redis-host"
+    redis_host: Optional[str] = None
     redis_port: int = 6379
 
     # Logging

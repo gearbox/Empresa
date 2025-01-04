@@ -1,15 +1,15 @@
-from fastapi import APIRouter, status as HTTPStatus, Depends
+from fastapi import APIRouter, status as status_code, Depends
 from loguru import logger
 
-from backend.managers import InfoManager
 from backend import schemas
+from backend.managers import InfoManager
 
 router = APIRouter()
 
 
 @router.get(
     "/info",
-    status_code=HTTPStatus.HTTP_200_OK,
+    status_code=status_code.HTTP_200_OK,
 )
 def info(
         info_manager: InfoManager = Depends(InfoManager)
