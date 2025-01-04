@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -11,12 +12,12 @@ class APIHealthCheck(BaseModel):
 
 
 class DBHealthCheck(BaseModel):
-    status: bool = True
+    status: Literal[True, False, "Disabled"] = True
     message: str = "Healthcheck Ok"
 
 
 class HealthCheckResponse(BaseModel):
-    status: bool = True
+    status: bool
     status_api: APIHealthCheck
     status_db: DBHealthCheck
-    status_redis: DBHealthCheck | None = None
+    status_redis: DBHealthCheck
